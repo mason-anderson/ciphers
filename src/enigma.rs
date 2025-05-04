@@ -1,4 +1,4 @@
-use crate::ciphers::*;
+use crate::ciphers;
 
 type Rotor = [u8; 256];
 
@@ -85,10 +85,13 @@ impl Enigma {
         return byte;
     }
 
-    pub fn encode(&self, pt: &Plaintext) -> Ciphertext {
+}
+
+impl ciphers::Cipher for Enigma {
+    fn encode(&self, pt: &Vec<u8>) -> Vec<u8> {
         let mut rotor_poses = self.rotor_poses.clone();
 
-        let mut ct: Ciphertext = Vec::new();
+        let mut ct: Vec<u8> = Vec::new();
         for byte in pt {
             ct.push(self.encode_byte(&rotor_poses, *byte));
             advance_rotor_poses(&mut rotor_poses);
@@ -96,9 +99,7 @@ impl Enigma {
         return ct;
     }
 
-    pub fn decode(&self, pt: &Ciphertext) -> Plaintext {
+    fn decode(&self, pt: &Vec<u8>) -> Vec<u8> {
         return self.encode(pt);
     }
 }
-
-

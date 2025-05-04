@@ -11,17 +11,11 @@ impl Ceaser {
 }
 
 impl ciphers::Cipher for Ceaser {
-    type Key  = u8;
-
-    fn get_key(&self) -> Self::Key {
-        self.key
-    }
-
-    fn encode(&self, pt: &ciphers::Plaintext) -> ciphers::Ciphertext {
+    fn encode(&self, pt: &Vec<u8>) -> Vec<u8> {
         pt.iter().map(|b| u8::wrapping_add(*b, self.key)).collect()
     }
 
-    fn decode(&self, pt: &ciphers::Ciphertext) -> ciphers::Plaintext {
+    fn decode(&self, pt: &Vec<u8>) -> Vec<u8> {
         pt.iter().map(|b| u8::wrapping_sub(*b, self.key)).collect()
     }
 }

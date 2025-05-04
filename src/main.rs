@@ -7,6 +7,8 @@ mod ciphers;
 mod caesar;
 mod vigenere;
 mod enigma;
+mod rail_fence;
+mod combination;
 
 use ciphers::*;
 
@@ -89,7 +91,21 @@ fn main() {
             } else {
                 enigma.encode(&input)
             }
-        },  
+        },
+        "rail_fence" => {
+            if key_str.len() != 1 {
+                eprint!("caesar key can not be longer than one byte");
+                return;
+            }
+            let key = *key_str.as_bytes().get(0).unwrap();
+            let rf = rail_fence::RailFence::new(key);
+
+            if args.decode {
+                rf.decode(&input)
+            } else {
+                rf.encode(&input)
+            }
+        },
         _ => panic!("invalid cipher"),
     };
     let _ = std::io::stdout().write_all(&output);
